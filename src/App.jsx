@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./styles.css";
 import { InputTodo } from "./components/InputTodo";
 import { InCompleteTodos } from "./components/IncompleteTodo";
+import { CompleteTodos } from "./components/CompleteTodo";
 
 export const App = () => {
   const [todoText, setTodoText] = useState("");
@@ -19,6 +20,7 @@ export const App = () => {
     setIncompleteTodos(newTodos);
     setTodoText("");
   };
+
   // 未完了のTodoから削除する
   const onClickDelete = (index) => {
     const newTodos = [...incompleteTodos];
@@ -27,6 +29,7 @@ export const App = () => {
     // 要素の更新
     setIncompleteTodos(newTodos);
   };
+
   const onClickComplete = (index) => {
     const newIncompleteTodos = [...incompleteTodos];
     // slice 何番目の要素に対して, いくつ削除するのか？というメソッド
@@ -53,34 +56,12 @@ export const App = () => {
         onChange={onChangeTodoText}
         onClick={onClickAdd}
       />
-      <div className="incomplete-area">
-        <p className="title">準備完了</p>
-        <ul>
-          {incompleteTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickComplete(index)}>出勤</button>
-                <button onClick={() => onClickDelete(index)}>退勤</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-
-      <div className="complete-area">
-        <p className="title">勤務中</p>
-        <ul>
-          {completeTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickBack(index)}>業務終了</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
+      <InCompleteTodos
+        todos={incompleteTodos}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
